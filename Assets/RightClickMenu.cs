@@ -5,6 +5,7 @@ using UnityEngine;
 public class RightClickMenu : UI
 {
     private Camera cam;
+    private Vector3 MousePosWhenOpened;
     private void Start()
     {
         cam = Camera.main;
@@ -12,18 +13,17 @@ public class RightClickMenu : UI
 
     public void GatherButton()
     {
-        Event e = Event.current;
-        Ray ray = cam.ScreenPointToRay(e.mousePosition);
-        if (Physics.Raycast(ray, out RaycastHit rc))
+        if (Physics.Raycast(Camera.main.ScreenToWorldPoint(MousePosWhenOpened), Camera.main.transform.forward * 200, out RaycastHit rc))
         {
-            Debug.Log("Hit " + rc.collider);
-            Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 10);
+            Debug.Log("Hit " + rc.collider.gameObject.name);
+            Debug.DrawLine(Camera.main.ScreenToWorldPoint(MousePosWhenOpened), rc.point, Color.red, 10);
         }
         CloseMenu();
     }
 
     public void OpenMenu()
     {
+        MousePosWhenOpened = Input.mousePosition;
         Vector3 offset = new Vector3(125, -190);
         transform.position = Input.mousePosition;
         gameObject.SetActive(true);
