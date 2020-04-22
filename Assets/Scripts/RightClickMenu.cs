@@ -4,19 +4,23 @@ using UnityEngine;
 
 public class RightClickMenu : UI
 {
-    private Camera cam;
     private Vector3 MousePosWhenOpened;
-    private void Start()
-    {
-        cam = Camera.main;
-    }
 
+    // This code is executed when clicking the gather button.
+    // This will find a unemployed human and set him to gather the resource
     public void GatherButton()
     {
-        if (Physics.Raycast(Camera.main.ScreenToWorldPoint(MousePosWhenOpened), Camera.main.transform.forward * 200, out RaycastHit rc))
+        MousePosWhenOpened.z = 1;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(MousePosWhenOpened), out RaycastHit rc))
         {
-            Debug.Log("Hit " + rc.collider.gameObject.name);
-            Debug.DrawLine(Camera.main.ScreenToWorldPoint(MousePosWhenOpened), rc.point, Color.red, 10);
+            Debug.DrawLine(Camera.main.ScreenPointToRay(MousePosWhenOpened).origin, rc.point, Color.red, 10);
+            GameObject human = Human.FindUnemployedHuman();
+            if (!(human == null)) {
+                human.GetComponent<Human>().Gather(rc.collider.gameObject);
+            } else
+            {
+                Debug.Log("No human availabale");
+            }
         }
         CloseMenu();
     }
