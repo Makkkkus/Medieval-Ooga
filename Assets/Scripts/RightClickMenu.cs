@@ -6,29 +6,27 @@ public class RightClickMenu : UI
 {
     private Vector3 MousePosWhenOpened;
 
-    // This code is executed when clicking the gather button.
-    // This will find a unemployed human and set him to gather the resource
-    public void GatherButton()
+    // This code is executed when clicking the assign button.
+    // This will find a unemployed human and set him to gather the resource.
+    public void AssignButton()
     {
-        MousePosWhenOpened.z = 1;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(MousePosWhenOpened), out RaycastHit rc))
         {
             Debug.DrawLine(Camera.main.ScreenPointToRay(MousePosWhenOpened).origin, rc.point, Color.red, 10);
+
             GameObject human = Human.FindUnemployedHuman();
-            if (!(human == null)) {
-                human.GetComponent<Human>().Gather(rc.collider.gameObject);
-            } else
-            {
-                Debug.Log("No human availabale");
-            }
+
+            // THIS ASSIGNS HUMANS WORK.
+            // TODO: Make this cleaner.
+            human.GetComponent<Human>().AssignWork(Work.FindCorrectWork(rc.collider.gameObject, human));
         }
         CloseMenu();
     }
 
+    // Opens the menu, and moves it to the mouse position.
     public void OpenMenu()
     {
         MousePosWhenOpened = Input.mousePosition;
-        Vector3 offset = new Vector3(125, -190);
         transform.position = Input.mousePosition;
         gameObject.SetActive(true);
     }

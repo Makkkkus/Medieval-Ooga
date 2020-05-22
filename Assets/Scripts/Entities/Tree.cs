@@ -9,9 +9,10 @@ public class Tree : Entity
         maxAge = 50;
     }
 
-    public void Cut()
+    public bool Cut(Human human)
     {
         Debug.Log("Cut the tree!");
         Die();
+        return true;
     }
 }

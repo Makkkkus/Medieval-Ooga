@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tree
   - Ground
+  - Human
   layers:
   - Default
   - TransparentFX

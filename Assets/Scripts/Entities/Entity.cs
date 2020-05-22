@@ -8,7 +8,7 @@ public class Entity : MonoBehaviour
     protected int maxAge = 10;
 
     // How long it takes for entities to age in seconds.
-    private int ageTime = 30;
+    private int ageTime = 60;
 
     private void Start()
     {
