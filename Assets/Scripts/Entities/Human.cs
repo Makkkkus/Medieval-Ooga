@@ -8,9 +8,7 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class Human : Entity
 {
-
-    // TODO: IMPORTANT: Queue system does not work properly yet.
-    private Dictionary<int, Work> workQueue = new Dictionary<int, Work>();
+    private Dictionary<ushort, Work> workQueue = new Dictionary<ushort, Work>();
     private Work currentWork;
 
     private NavMeshAgent nav;
@@ -22,7 +20,7 @@ public class Human : Entity
     {
         maxAge = 100;
         nav = GetComponent<NavMeshAgent>();
-        anim = GetComponent<Animator>();
+        anim = transform.GetChild(0).GetComponent<Animator>();
     }
 
     private void Update()
@@ -32,12 +30,16 @@ public class Human : Entity
         anim.SetFloat("Velocity", velocity);
 
         // If the player is close to the target and standing still call the arrived function.
-        if (velocity < 0.2 && currentWork != null)
+        if (currentWork != null)
         {
-            if (currentWork.GetDistanceToTarget() < 1)
+            if (currentWork.GetTarget() != null)
             {
-                currentWork.Arrived();
+                if (currentWork.GetDistanceToTarget() < 1 && velocity < 0.1)
+                {
+                    currentWork.Arrived();
+                }
             }
+            else StartNextWork();
         }
         
     }
@@ -47,23 +49,30 @@ public class Human : Entity
     {
         workQueue.Remove(currentWork.idInList);
 
-        // If the queue is not empty; set the current work to the next in the queue.
+        // If the queue is not empty; set the current work to the next in the queue and start it.
         if (workQueue.Count > 0)
         {
             currentWork = workQueue[workQueue.Keys.Min()];
+
+            if (currentWork.GetTarget() == null) StartNextWork();
+            else currentWork.Start();
+
         } else
         {
             currentWork = null;
-            Debug.Log("Work queue for: " + gameObject.name + " has finished");
+            i = 0;
+            Debug.Log("Work queue for: " + gameObject.name + " has finished.");
         }
     }
-
-    int i = 0;
+    
+    // TODO: This is a stupid fix. Look at Work.idInList.
+    private ushort i = 0;
 
     // Assigns the human to a job.
     public void AssignWork(Work work)
     {
         if (work == null) return;
+        if (workQueue.ContainsValue(work)) return;
 
         work.idInList = i;
         workQueue.Add(i, work);
@@ -74,34 +83,51 @@ public class Human : Entity
             currentWork = work;
             work.Start();
         }
+
         i++;
     }
 
+    public Dictionary<ushort, Work> GetWorkQueue()
+    {
+        return workQueue;
+    }
+
+    // STATIC AREA
+
     // Currently finds the first human in the list which is not occupied.
-    // TODO: Should upgrade to take into account distance.
+    // TODO: Should upgrade to take into account distance and queue size.
     public static GameObject FindUnemployedHuman()
     {
+        // Check if it has two or less in the queue.
         foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
         {
-            if (human.GetComponent<Human>().workQueue.Count < 1)
+            if (human.GetComponent<Human>().GetWorkQueue().Count < 1)
             {
                 return human;
             }
         }
 
+        // Check if it has five or less in the queue.
         foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
         {
-            if (human.GetComponent<Human>().workQueue.Count < 5)
+            if (human.GetComponent<Human>().GetWorkQueue().Count < 5)
             {
                 return human;
             }
         }
 
-        Debug.LogWarning("No humans available");
+        // Add the first human it finds
+        foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
+        {
+            return human;
+        }
+
+        // Should never happen
         return null;
     }
 
     // Finds a random destination on the map
+    // TODO: Not done.
     public static Vector3 FindRandomDestination()
     {
         return new Vector3(0, 0, 0);

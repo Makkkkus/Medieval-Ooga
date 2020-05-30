@@ -5,7 +5,7 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     public int age { get; protected set; }
-    protected int maxAge = 10;
+    protected int maxAge = 50;
 
     // How long it takes for entities to age in seconds.
     private int ageTime = 60;
@@ -16,6 +16,8 @@ public class Entity : MonoBehaviour
     }
 
     private float secondsSinceLastAge;
+
+    // Ages the entity.
     private void Update()
     {
         secondsSinceLastAge += Time.deltaTime;

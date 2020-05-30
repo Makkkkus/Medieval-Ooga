@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ChoppingWork : Work
 {
-
     public ChoppingWork(GameObject target, GameObject human)
     {
         this.target = target;
@@ -13,10 +12,10 @@ public class ChoppingWork : Work
 
     public override void Arrived() 
     {
-        base.Arrived();
-
         // Cut the tree
-        target.GetComponent<Tree>().Cut(human.GetComponent<Human>());
+        target.GetComponent<TreeEntity>().Cut(human.GetComponent<Human>());
         Debug.Log("Executed: ChoppingWork.Arrived()");
+
+        base.Arrived();
     }
 }

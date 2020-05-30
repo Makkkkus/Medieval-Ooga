@@ -4,26 +4,17 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private void Update()
-    {
-        for (int i = 0; i < 5; i++)
-        {
-            SpawnHuman();
-            SpawnTree();
-        }
-    }
-
     [SerializeField] private GameObject TreePrefab;
     [SerializeField] private GameObject HumanPrefab;
-    [SerializeField] private static int SpawnAmount = 100;
-    [SerializeField] private static int SpawnRadius = 50;
+    [SerializeField] private static short SpawnAmount = 100;
 
-    private int i = 0;
+    private short i = 0;
     private void SpawnTree()
     {
         // Scatters trees around inside a certain radius.
+        // This spawns trees inside other objects a lot.
         // TODO: Implement a better method of spawing trees.
-        if (i < SpawnAmount)
+        /* if (i < SpawnAmount)
         {
             Vector3 spawnPos = new Vector3(Random.insideUnitCircle.x * SpawnRadius, 0, Random.insideUnitCircle.y * SpawnRadius);
 
@@ -31,7 +22,10 @@ public class GameManager : MonoBehaviour
             Collider[] colliders = Physics.OverlapSphere(spawnPos, 10f);
             foreach (Collider col in colliders)
             {
-                if (col.gameObject.CompareTag("Ground"))
+                if (!col.gameObject.CompareTag("Ground"))
+                {
+                    break;
+                } else
                 {
                     Instantiate(TreePrefab, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
                     i++;
@@ -39,6 +33,7 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        */
     }
 
     private void SpawnHuman()

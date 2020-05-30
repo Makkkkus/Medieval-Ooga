@@ -2,12 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RightClickMenu : UI
+public class RightClickMenu : MonoBehaviour
 {
+    private void Start()
+    {
+        gameObject.SetActive(false);
+    }
+
     private Vector3 MousePosWhenOpened;
 
     // This code is executed when clicking the assign button.
     // This will find a unemployed human and set him to gather the resource.
+    // TODO: Move this code somewhere else.
     public void AssignButton()
     {
         if (Physics.Raycast(Camera.main.ScreenPointToRay(MousePosWhenOpened), out RaycastHit rc))

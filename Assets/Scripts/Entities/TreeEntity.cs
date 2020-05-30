@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tree : Entity
+public class TreeEntity : Entity
 {
-    private void Start()
-    {
-        maxAge = 50;
-    }
-
     public bool Cut(Human human)
     {
         Debug.Log("Cut the tree!");
