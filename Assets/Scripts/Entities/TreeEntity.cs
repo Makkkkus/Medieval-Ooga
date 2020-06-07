@@ -7,6 +7,7 @@ public class TreeEntity : Entity
     public bool Cut(Human human)
     {
         Debug.Log("Cut the tree!");
+        human.AddItemToInventory(new WoodItem());
         Die();
         return true;
     }

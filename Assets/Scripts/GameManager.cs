@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    /*
     [SerializeField] private GameObject TreePrefab;
     [SerializeField] private GameObject HumanPrefab;
     [SerializeField] private static short SpawnAmount = 100;
@@ -14,7 +15,7 @@ public class GameManager : MonoBehaviour
         // Scatters trees around inside a certain radius.
         // This spawns trees inside other objects a lot.
         // TODO: Implement a better method of spawing trees.
-        /* if (i < SpawnAmount)
+        if (i < SpawnAmount)
         {
             Vector3 spawnPos = new Vector3(Random.insideUnitCircle.x * SpawnRadius, 0, Random.insideUnitCircle.y * SpawnRadius);
 
@@ -33,11 +34,5 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        */
-    }
-
-    private void SpawnHuman()
-    {
-
-    }
+    }*/
 }

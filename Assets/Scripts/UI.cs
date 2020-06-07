@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
+    [SerializeField] private GameObject RightClickMenu;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1))
-            transform.GetChild(1).GetComponent<RightClickMenu>().OpenMenu();
+            RightClickMenu.GetComponent<RightClickMenu>().OpenMenu();
     }
 }

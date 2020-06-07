@@ -11,6 +11,9 @@ public class Human : Entity
     private Dictionary<ushort, Work> workQueue = new Dictionary<ushort, Work>();
     private Work currentWork;
 
+    private Item itemSlot1;
+    private Item itemSlot2;
+
     private NavMeshAgent nav;
     private Animator anim;
 
@@ -90,6 +93,22 @@ public class Human : Entity
     public Dictionary<ushort, Work> GetWorkQueue()
     {
         return workQueue;
+    }
+
+    public void AddItemToInventory(Item item)
+    {
+        if (itemSlot1 == null) 
+        {
+            itemSlot1 = item;
+            return;
+        } 
+        else if (itemSlot2 == null)
+        {
+            itemSlot2 = item;
+            return;
+        }
+
+        item.Drop();
     }
 
     // STATIC AREA
