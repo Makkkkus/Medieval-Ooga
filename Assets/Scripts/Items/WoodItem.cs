@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class WoodItem : Item
 {
-    public WoodItem()
-    {
+    protected static new GameObject model = new GameObject("WoodItem");
 
+    public WoodItem(short stackAmount)
+    {
+        stacksize = stackAmount;
     }
 }

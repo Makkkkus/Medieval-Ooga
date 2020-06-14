@@ -58,7 +58,7 @@ public class Human : Entity
             currentWork = workQueue[workQueue.Keys.Min()];
 
             if (currentWork.GetTarget() == null) StartNextWork();
-            else currentWork.Start();
+            else currentWork.Init();
 
         } else
         {
@@ -84,7 +84,7 @@ public class Human : Entity
         if (workQueue.Count == 1)
         {
             currentWork = work;
-            work.Start();
+            work.Init();
         }
 
         i++;
@@ -108,7 +108,7 @@ public class Human : Entity
             return;
         }
 
-        item.Drop();
+        item.Drop(transform.position);
     }
 
     // STATIC AREA

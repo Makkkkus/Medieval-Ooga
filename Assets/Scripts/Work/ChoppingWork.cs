@@ -16,6 +16,6 @@ public class ChoppingWork : Work
         target.GetComponent<TreeEntity>().Cut(human.GetComponent<Human>());
         Debug.Log("Executed: ChoppingWork.Arrived()");
 
-        base.Arrived();
+        Finished();
     }
 }

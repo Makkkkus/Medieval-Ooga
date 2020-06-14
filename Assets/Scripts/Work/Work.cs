@@ -12,7 +12,7 @@ public class Work
     public ushort idInList;
 
     // Moves the player to the work.
-    public virtual void Start()
+    public virtual void Init()
     {
         Debug.Log("Executed: Work.Start()");
 
