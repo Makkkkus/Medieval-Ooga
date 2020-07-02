@@ -13,19 +13,10 @@ public class RightClickMenu : MonoBehaviour
 
     // This code is executed when clicking the assign button.
     // This will find a unemployed human and set him to gather the resource.
-    // TODO: Move this code somewhere else.
+    // TODO: Move this code somewhere else. Rays should not be cast in a method inside a UI class.
     public void AssignButton()
     {
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(MousePosWhenOpened), out RaycastHit rc))
-        {
-            Debug.DrawLine(Camera.main.ScreenPointToRay(MousePosWhenOpened).origin, rc.point, Color.red, 10);
-
-            GameObject human = Human.FindUnemployedHuman();
-
-            // THIS ASSIGNS HUMANS WORK.
-            // TODO: Make this cleaner.
-            human.GetComponent<Human>().AssignWork(Work.FindCorrectWork(rc.collider.gameObject, human));
-        }
+        CameraController.CastRayAndAssignWork(MousePosWhenOpened);
         CloseMenu();
     }
 

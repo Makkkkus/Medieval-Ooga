@@ -8,6 +8,10 @@ public abstract class Item
 
     protected static GameObject model;
     protected short stacksize;
+
+    public short Amount {
+        get => stacksize;
+    }
     
     public void Drop(Vector3 position)
     {
@@ -16,6 +20,14 @@ public abstract class Item
 
     public void AddToStack(short amount)
     {
-        stacksize += amount;
+        if (stacksize <= maxStack)
+        {
+            stacksize += amount;
+        }
+        else
+        {
+            stacksize = maxStack;
+            Debug.LogWarning("Item.AddToStack(): Stack is full. Some items may have dissappared.");
+        }
     }
 }
