@@ -137,10 +137,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -3982380051877738971, guid: 129889689b58b8642b1b93aa7b9dd460,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -2038049257889976027, guid: 129889689b58b8642b1b93aa7b9dd460,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 129889689b58b8642b1b93aa7b9dd460,
         type: 3}
       propertyPath: m_Name
       value: Spruce_Tree
+      objectReference: {fileID: 0}
+    - target: {fileID: 3645278520329850179, guid: 129889689b58b8642b1b93aa7b9dd460,
+        type: 3}
+      propertyPath: m_ScaleInLightmap
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 129889689b58b8642b1b93aa7b9dd460, type: 3}

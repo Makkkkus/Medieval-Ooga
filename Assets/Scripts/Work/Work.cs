@@ -5,8 +5,8 @@ using UnityEngine.AI;
 
 public class Work
 {
-    protected GameObject target;
-    protected GameObject human;
+    protected Entity target;
+    protected Human human;
 
     // TODO: This is stupid.
     public ushort idInList;
@@ -14,7 +14,11 @@ public class Work
     // Moves the player to the work.
     public virtual void Init()
     {
-        Debug.Log("Executed: Work.Start()");
+        if (human.currentItem != null)
+        {
+            human.ResetQueue();
+            Finished();
+        }
 
         // Sets the destination for the human.
         NavMeshAgent nav = human.GetComponent<NavMeshAgent>();
@@ -24,9 +28,6 @@ public class Work
     // Called when arrived. Does the actual work.
     public virtual void Arrived()
     {
-        Debug.Log("Executed: Work.Arrived()");
-
-
         // This has to be at the end of the function.
         Finished();
     }
@@ -34,10 +35,8 @@ public class Work
     // Called after the work is done.
     public virtual void Finished()
     {
-        Debug.Log("Executed: Work.Finished()");
-
         // Starts the next work in the queue.
-        human.GetComponent<Human>().StartNextWork();
+        human.StartNextWork();
     }
 
     // Used in the update method of Human
@@ -47,7 +46,7 @@ public class Work
         return Vector3.Distance(human.transform.position, target.transform.position);
     }
 
-    public GameObject GetTarget()
+    public Entity GetTarget()
     {
         return target;
     }
@@ -56,7 +55,7 @@ public class Work
 
     // Will return the correct type of work from the tag of the target.
     // This method creates the work objects.
-    public static Work FindCorrectWork(GameObject target, GameObject human)
+    public static Work FindCorrectWork(Entity target, Human human)
     {
         switch (target.tag)
         {

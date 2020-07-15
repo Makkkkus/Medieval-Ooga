@@ -24,11 +24,11 @@ public class CameraController : MonoBehaviour
         {
             Debug.DrawLine(Camera.main.ScreenPointToRay(mousePos).origin, rc.point, Color.red, 10);
 
-            GameObject human = Human.FindUnemployedHuman();
+            Human human = Human.FindUnemployedHuman();
 
             // THIS ASSIGNS HUMANS WORK.
             // TODO: Make this cleaner.
-            human.GetComponent<Human>().AssignWork(Work.FindCorrectWork(rc.collider.gameObject, human));
+            human.AssignWork(Work.FindCorrectWork(rc.collider.gameObject.GetComponent<Entity>(), human));
         }
     }
 }

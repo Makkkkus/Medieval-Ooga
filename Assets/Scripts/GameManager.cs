@@ -4,35 +4,27 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    /*
-    [SerializeField] private GameObject TreePrefab;
-    [SerializeField] private GameObject HumanPrefab;
-    [SerializeField] private static short SpawnAmount = 100;
+    private void Start()
+    {
+        Random.InitState(0);
+        SpawnTree();
+    }
 
-    private short i = 0;
+    public GameObject TreePrefab;
+    public GameObject HumanPrefab;
+    [SerializeField] private static short SpawnRadius = 100;
+
     private void SpawnTree()
     {
-        // Scatters trees around inside a certain radius.
-        // This spawns trees inside other objects a lot.
-        // TODO: Implement a better method of spawing trees.
-        if (i < SpawnAmount)
+        for (int x = 0; x <= SpawnRadius; x += 3)
         {
-            Vector3 spawnPos = new Vector3(Random.insideUnitCircle.x * SpawnRadius, 0, Random.insideUnitCircle.y * SpawnRadius);
-
-            // Check if we're overlapping with any other objects.
-            Collider[] colliders = Physics.OverlapSphere(spawnPos, 10f);
-            foreach (Collider col in colliders)
+            for (int y = 0; y <= SpawnRadius; y += 3)
             {
-                if (!col.gameObject.CompareTag("Ground"))
+                if (Random.value < 0.5f)
                 {
-                    break;
-                } else
-                {
-                    Instantiate(TreePrefab, spawnPos, Quaternion.Euler(0, Random.Range(0, 360), 0));
-                    i++;
-                    break;
+                    Instantiate(TreePrefab, new Vector3(x - SpawnRadius / 2, 0, y - SpawnRadius / 2), Quaternion.Euler(0, Random.Range(0, 90), 0));
                 }
             }
         }
-    }*/
+    }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class UI : MonoBehaviour
 {
-    [SerializeField] private GameObject RightClickMenu;
+    public GameObject RightClickMenu;
 
     private void Update()
     {

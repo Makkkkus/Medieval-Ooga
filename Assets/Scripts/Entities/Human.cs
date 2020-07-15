@@ -11,8 +11,7 @@ public class Human : Entity
     private Dictionary<ushort, Work> workQueue = new Dictionary<ushort, Work>();
     private Work currentWork;
 
-    private Item itemSlot1;
-    private Item itemSlot2;
+    public Item currentItem;
 
     private NavMeshAgent nav;
     private Animator anim;
@@ -23,7 +22,7 @@ public class Human : Entity
     {
         maxAge = 100;
         nav = GetComponent<NavMeshAgent>();
-        anim = transform.GetChild(0).GetComponent<Animator>();
+        anim = GetComponent<Animator>();
     }
 
     private void Update()
@@ -50,11 +49,10 @@ public class Human : Entity
     // This function removes the current active work and replaces it with the next in the queue.
     public void StartNextWork()
     {
-        workQueue.Remove(currentWork.idInList);
-
         // If the queue is not empty; set the current work to the next in the queue and start it.
         if (workQueue.Count > 0)
         {
+            workQueue.Remove(currentWork.idInList);
             currentWork = workQueue[workQueue.Keys.Min()];
 
             if (currentWork.GetTarget() == null) StartNextWork();
@@ -62,15 +60,13 @@ public class Human : Entity
 
         } else
         {
-            currentWork = null;
-            i = 0;
+            ResetQueue();
             Debug.Log("Work queue for: " + gameObject.name + " has finished.");
         }
     }
     
     // TODO: This is a stupid fix. Look at Work.idInList.
     private ushort i = 0;
-
     // Assigns the human to a job.
     public void AssignWork(Work work)
     {
@@ -90,6 +86,15 @@ public class Human : Entity
         i++;
     }
 
+    public void ResetQueue()
+    {
+        i = 0;
+        currentWork = null;
+        workQueue.Clear();
+
+        Debug.Log("Reset queue for " + gameObject.name);
+    }
+
     public Dictionary<ushort, Work> GetWorkQueue()
     {
         return workQueue;
@@ -97,32 +102,21 @@ public class Human : Entity
 
     public void AddItemToInventory(Item item)
     {
-        if (itemSlot1 == null) 
-        {
-            itemSlot1 = item;
-            return;
-        } 
-        else if (itemSlot2 == null)
-        {
-            itemSlot2 = item;
-            return;
-        }
-
-        item.Drop(transform.position);
+        currentItem = item;
     }
 
     // STATIC AREA
 
     // Currently finds the first human in the list which is not occupied.
     // TODO: Should upgrade to take into account distance and queue size.
-    public static GameObject FindUnemployedHuman()
+    public static Human FindUnemployedHuman()
     {
         // Check if it has two or less in the queue.
         foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
         {
             if (human.GetComponent<Human>().GetWorkQueue().Count < 1)
             {
-                return human;
+                return human.GetComponent<Human>();
             }
         }
 
@@ -131,14 +125,14 @@ public class Human : Entity
         {
             if (human.GetComponent<Human>().GetWorkQueue().Count < 5)
             {
-                return human;
+                return human.GetComponent<Human>();
             }
         }
 
         // Add the first human it finds
         foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
         {
-            return human;
+            return human.GetComponent<Human>();
         }
 
         // Should never happen
