@@ -49,6 +49,13 @@ public class Human : Entity
     // This function removes the current active work and replaces it with the next in the queue.
     public void StartNextWork()
     {
+        if (currentItem != null)
+        {
+            ResetQueue();
+            AssignWork(Work.FindCorrectWork(StorageBuilding.FindClosestStorage(), this));
+            return;
+        }
+
         // If the queue is not empty; set the current work to the next in the queue and start it.
         if (workQueue.Count > 0)
         {
@@ -57,7 +64,6 @@ public class Human : Entity
 
             if (currentWork.GetTarget() == null) StartNextWork();
             else currentWork.Init();
-
         } else
         {
             ResetQueue();
@@ -68,10 +74,12 @@ public class Human : Entity
     // TODO: This is a stupid fix. Look at Work.idInList.
     private ushort i = 0;
     // Assigns the human to a job.
-    public void AssignWork(Work work)
+    // Returns true if the work has been queued.
+    public bool AssignWork(Work work)
     {
-        if (work == null) return;
-        if (workQueue.ContainsValue(work)) return;
+        if (work == null) return false;
+        if (workQueue.ContainsValue(work)) return false;
+        if (currentItem != null) return false;
 
         work.idInList = i;
         workQueue.Add(i, work);
@@ -84,8 +92,12 @@ public class Human : Entity
         }
 
         i++;
+        return true;
     }
 
+    /// <summary>
+    /// Resets the queue of the human this function is called on.
+    /// </summary>
     public void ResetQueue()
     {
         i = 0;
@@ -100,19 +112,20 @@ public class Human : Entity
         return workQueue;
     }
 
-    public void AddItemToInventory(Item item)
-    {
-        currentItem = item;
-    }
-
     // STATIC AREA
 
-    // Currently finds the first human in the list which is not occupied.
-    // TODO: Should upgrade to take into account distance and queue size.
+    private static System.Random random = new System.Random();
+
+    // Finds a random human in the list which is not occupied.
+    // TODO: Should upgrade to take into account distance.
     public static Human FindUnemployedHuman()
     {
+        GameObject[] humans = GameObject.FindGameObjectsWithTag("Human");
+
+        humans = humans.OrderBy(x => random.Next()).ToArray();
+
         // Check if it has two or less in the queue.
-        foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
+        foreach (GameObject human in humans)
         {
             if (human.GetComponent<Human>().GetWorkQueue().Count < 1)
             {
@@ -121,7 +134,7 @@ public class Human : Entity
         }
 
         // Check if it has five or less in the queue.
-        foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
+        foreach (GameObject human in humans)
         {
             if (human.GetComponent<Human>().GetWorkQueue().Count < 5)
             {
@@ -130,7 +143,7 @@ public class Human : Entity
         }
 
         // Add the first human it finds
-        foreach (GameObject human in GameObject.FindGameObjectsWithTag("Human"))
+        foreach (GameObject human in humans)
         {
             return human.GetComponent<Human>();
         }

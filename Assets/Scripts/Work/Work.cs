@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Work
+public abstract class Work
 {
-    protected Entity target;
+    protected GameObject target;
     protected Human human;
 
     // TODO: This is stupid.
@@ -14,12 +14,6 @@ public class Work
     // Moves the player to the work.
     public virtual void Init()
     {
-        if (human.currentItem != null)
-        {
-            human.ResetQueue();
-            Finished();
-        }
-
         // Sets the destination for the human.
         NavMeshAgent nav = human.GetComponent<NavMeshAgent>();
         nav.SetDestination(target.transform.position);
@@ -46,7 +40,7 @@ public class Work
         return Vector3.Distance(human.transform.position, target.transform.position);
     }
 
-    public Entity GetTarget()
+    public GameObject GetTarget()
     {
         return target;
     }
@@ -55,7 +49,7 @@ public class Work
 
     // Will return the correct type of work from the tag of the target.
     // This method creates the work objects.
-    public static Work FindCorrectWork(Entity target, Human human)
+    public static Work FindCorrectWork(GameObject target, Human human)
     {
         switch (target.tag)
         {

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ChoppingWork : Work
 {
-    public ChoppingWork(Entity target, Human human)
+    public ChoppingWork(GameObject target, Human human)
     {
         this.target = target;
         this.human = human;

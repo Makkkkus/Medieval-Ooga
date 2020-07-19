@@ -16,8 +16,10 @@ public class CameraController : MonoBehaviour
         transform.Translate(Vector3.forward * scroll, Space.Self);
     }
 
-
-    // This will cast a ray and find a unemployed human and set him to gather the resource the ray hit.
+    /// <summary>
+    /// This will cast a ray and find an unemployed human and set him to gather the resource the ray hit.
+    /// </summary>
+    /// <param name="mousePos">The position of the mouse on the screen</param>
     public static void CastRayAndAssignWork(Vector3 mousePos)
     {
         if (Physics.Raycast(Camera.main.ScreenPointToRay(mousePos), out RaycastHit rc))
@@ -28,7 +30,7 @@ public class CameraController : MonoBehaviour
 
             // THIS ASSIGNS HUMANS WORK.
             // TODO: Make this cleaner.
-            human.AssignWork(Work.FindCorrectWork(rc.collider.gameObject.GetComponent<Entity>(), human));
+            human.AssignWork(Work.FindCorrectWork(rc.collider.gameObject, human));
         }
     }
 }
