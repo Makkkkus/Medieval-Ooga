@@ -52,7 +52,7 @@ public class Human : Entity
         if (currentItem != null)
         {
             ResetQueue();
-            AssignWork(Work.FindCorrectWork(StorageBuilding.FindClosestStorage(), this));
+            //AssignWork(Work.FindCorrectWork(StorageBuilding.FindClosestStorage(this), this));
             return;
         }
 
