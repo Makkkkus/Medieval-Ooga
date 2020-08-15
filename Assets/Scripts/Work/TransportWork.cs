@@ -4,18 +4,26 @@ using UnityEngine;
 
 public class TransportWork : Work
 {
-    public TransportWork(GameObject target, Human human)
-    {
-        this.target = target;
-        this.human = human;
-    }
+	private bool TransportFrom;
+	public TransportWork(GameObject target, Human human, bool TransportFrom)
+	{
+		this.target = target;
+		this.human = human;
+		this.TransportFrom = TransportFrom;
+	}
 
-    public override void Arrived()
-    {
-        // Transfer items to inventory
-        target.GetComponent<StorageBuilding>().items.Add(human.currentItem);
-        human.currentItem = null;
-
-        Finished();
-    }
+	public override void Arrived()
+	{
+		if (TransportFrom)
+		{
+		
+		} else
+		{
+		// Transfer items to inventory
+		target.GetComponent<StorageBuilding>().items.Add(human.currentItem);
+		human.currentItem = null;
+		
+		Finished();
+		}
+	}
 }
