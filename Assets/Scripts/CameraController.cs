@@ -4,33 +4,70 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private float MoveSpeed = 15;
+	private float MoveSpeed = 15;
+	private Interactable focus;
+	public Human targetHuman;
 
-    private void Update()
-    {
-        float horizontal = Input.GetAxis("Horizontal") * Time.deltaTime;
-        float vertical = Input.GetAxis("Vertical") * Time.deltaTime;
-        float scroll = Input.GetAxis("Mouse ScrollWheel");
+	private void Start() {}
 
-        transform.Translate(horizontal * MoveSpeed, 0, vertical * MoveSpeed, Space.World);
-        transform.Translate(Vector3.forward * scroll, Space.Self);
-    }
+	private void Update()
+	{
+		// Get input
+		float horizontal = Input.GetAxis("Horizontal") * Time.deltaTime;
+		float vertical = Input.GetAxis("Vertical") * Time.deltaTime;
+		float scroll = Input.GetAxis("Mouse ScrollWheel");
 
-    /// <summary>
-    /// This will cast a ray and find an unemployed human and set him to gather the resource the ray hit.
-    /// </summary>
-    /// <param name="mousePos">The position of the mouse on the screen</param>
-    public static void CastRayAndAssignWork(Vector3 mousePos)
-    {
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(mousePos), out RaycastHit rc))
-        {
-            Debug.DrawLine(Camera.main.ScreenPointToRay(mousePos).origin, rc.point, Color.red, 10);
+		// Move
+		transform.Translate(horizontal * MoveSpeed, 0, vertical * MoveSpeed, Space.World);
+		transform.Translate(Vector3.forward * scroll, Space.Self);
+	}
 
-            Human human = Human.FindUnemployedHuman();
+	public void CastRayAndAssignFocus(Vector3 mousePos)
+	{
+		// Find a human to do the job.
+		targetHuman = Human.FindUnemployedHuman();
 
-            // THIS ASSIGNS HUMANS WORK.
-            // TODO: Make this cleaner.
-            human.AssignWork(Work.FindCorrectWork(rc.collider.gameObject, human));
-        }
-    }
+		// Initialize the ray
+		Ray ray = GetComponent<Camera>().ScreenPointToRay(mousePos);
+		RaycastHit hit;
+		
+		// Cast the ray
+		if (Physics.Raycast(ray, out hit)) 
+		{
+			Interactable interactable = hit.collider.GetComponent<Interactable>();
+			if (interactable != null) 
+			{
+				SetFocus(interactable);
+			}
+		}
+	}
+
+	public void SetFocus(Interactable newFocus)
+	{
+		if (newFocus != focus) 
+		{
+			if (focus != null) 
+			{
+				RemoveFocus();
+			}
+			focus = newFocus;
+
+			targetHuman.FollowTarget(focus);
+		}
+
+		focus.OnFocused(targetHuman.transform);
+	}
+
+	public void RemoveFocus()
+	{
+		if (focus != null) 
+		{
+			focus.OnDefocused();
+		}
+		
+		targetHuman.StopFollowingTarget();
+
+		focus = null;
+
+	}
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RightClickMenu : MonoBehaviour
 {
+	public CameraController cameraController;
     private void Start()
     {
         gameObject.SetActive(false);
@@ -14,7 +15,7 @@ public class RightClickMenu : MonoBehaviour
     // This code is executed when clicking the assign button.
     public void AssignButton()
     {
-        CameraController.CastRayAndAssignWork(MousePosWhenOpened);
+        cameraController.CastRayAndAssignFocus(MousePosWhenOpened);
         CloseMenu();
     }
 
